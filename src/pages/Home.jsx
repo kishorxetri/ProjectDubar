@@ -1,23 +1,11 @@
 import Navbar from '../Components/Navbar';
+import Hero from '../Components/Hero';
 
 const Home = () => {
   return (
     <div>
       <Navbar />
-
-      <section
-        id="home"
-        className="min-h-screen flex items-center justify-center bg-gradient-to-br from-green-500 via-green-600 to-emerald-700"
-      >
-        <div className="text-center text-white px-6">
-          <h1 className="text-4xl sm:text-5xl md:text-7xl font-bold mb-4 sm:mb-6 tracking-tight">
-            Dubar Youth Society
-          </h1>
-          <p className="text-lg sm:text-xl md:text-2xl text-green-100 max-w-2xl mx-auto">
-            Nurturing our village, empowering our community
-          </p>
-        </div>
-      </section>
+      <Hero />
 
       <section
         id="about"
