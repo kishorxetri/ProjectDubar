@@ -1,25 +1,13 @@
 import Navbar from '../Components/Navbar';
 import Hero from '../Components/Hero';
+import About from '../Components/About';
 
 const Home = () => {
   return (
     <div>
       <Navbar />
       <Hero />
-
-      <section
-        id="about"
-        className="min-h-screen flex items-center justify-center bg-slate-50"
-      >
-        <div className="text-center px-6">
-          <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-slate-800 mb-4">
-            About Us
-          </h2>
-          <p className="text-slate-600 max-w-xl mx-auto text-sm sm:text-base">
-            Rooted in our village traditions, growing towards a brighter future
-          </p>
-        </div>
-      </section>
+      <About />
 
       <section
         id="programs"
