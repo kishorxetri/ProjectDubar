@@ -7,6 +7,7 @@ import slide3 from '../assests/Scroll3.jfif';
 const Hero = () => {
   const [currentSlide, setCurrentSlide] = useState(0);
   const [isTransitioning, setIsTransitioning] = useState(false);
+  const [scrollOpacity, setScrollOpacity] = useState(1);
 
   const slides = [
     { id: 1, image: slide1, alt: 'Dubar Youth Society Community' },
@@ -29,6 +30,19 @@ const Hero = () => {
       setTimeout(() => setIsTransitioning(false), 800);
     }
   };
+
+  // Handle scroll fade effect
+  useEffect(() => {
+    const handleScroll = () => {
+      const scrolled = window.scrollY;
+      const heroHeight = window.innerHeight * 0.8;
+      const opacity = Math.max(1 - scrolled / heroHeight, 0.3);
+      setScrollOpacity(opacity);
+    };
+
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
 
   // Auto-scroll to next section after 8 seconds
   useEffect(() => {
@@ -53,8 +67,8 @@ const Hero = () => {
 
   return (
     <section className="relative h-[80vh] w-full overflow-hidden">
-      {/* Image Slider - Simple Fade */}
-      <div className="absolute inset-0">
+      {/* Image Slider - Simple Fade with Scroll Effect */}
+      <div className="absolute inset-0" style={{ opacity: scrollOpacity, transition: 'opacity 0.1s ease-out' }}>
         {slides.map((slide, index) => (
           <div
             key={slide.id}
@@ -78,7 +92,7 @@ const Hero = () => {
         <div className="max-w-7xl mx-auto px-6 lg:px-8 w-full">
           <div className="max-w-3xl">
             {/* Badge */}
-            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-green-500/20 backdrop-blur-sm border border-green-400/30 mb-6">
+            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-green-500/20 backdrop-blur-sm border border-green-400/30 mb-6 opacity-0 animate-slide-down" style={{ animationDelay: '0.2s' }}>
               <div className="w-2 h-2 bg-green-400 rounded-full animate-pulse"></div>
               <span className="text-green-100 text-sm font-medium">
                 Empowering Communities Since 2080
@@ -86,22 +100,22 @@ const Hero = () => {
             </div>
 
             {/* Main Heading */}
-            <h1 className="text-5xl sm:text-6xl lg:text-7xl font-bold text-white mb-4 tracking-tight">
+            <h1 className="text-5xl sm:text-6xl lg:text-7xl font-bold text-white mb-4 tracking-tight opacity-0 animate-slide-down" style={{ animationDelay: '0.4s' }}>
               Dubar Youth Society
             </h1>
 
             {/* Subtext */}
-            <p className="text-xl sm:text-2xl text-green-100 mb-6 font-medium">
+            <p className="text-xl sm:text-2xl text-green-100 mb-6 font-medium opacity-0 animate-slide-down" style={{ animationDelay: '0.6s' }}>
               Established in 2080 • Located in Dordi, Lamjung
             </p>
 
             {/* Quote */}
-            <p className="text-lg sm:text-xl text-white/90 mb-10 max-w-2xl leading-relaxed">
+            <p className="text-lg sm:text-xl text-white/90 mb-10 max-w-2xl leading-relaxed opacity-0 animate-fade-in" style={{ animationDelay: '1s' }}>
               "Empowering youth to uplift our village through unity, service, and awareness."
             </p>
 
             {/* Buttons with Curtain Effect */}
-            <div className="flex flex-wrap gap-4">
+            <div className="flex flex-wrap gap-4 opacity-0 animate-slide-up" style={{ animationDelay: '0.8s' }}>
               <button className="group relative px-8 py-4 bg-green-600 text-white font-semibold rounded-xl overflow-hidden transition-all duration-300 hover:scale-105 hover:shadow-2xl hover:shadow-green-600/50">
                 <span className="relative z-10">Explore Programs</span>
                 {/* Split Curtain Effect */}
