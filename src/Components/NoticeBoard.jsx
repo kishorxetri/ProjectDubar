@@ -48,12 +48,25 @@ const NoticeBoard = () => {
   };
 
   const formatDate = (dateString) => {
-    const date = new Date(dateString);
-    return date.toLocaleDateString('en-US', {
-      year: 'numeric',
-      month: 'short',
-      day: 'numeric'
-    });
+    if (!dateString) return 'No date';
+
+    try {
+      const date = new Date(dateString);
+
+      // Check if date is valid
+      if (isNaN(date.getTime())) {
+        return 'Invalid date';
+      }
+
+      return date.toLocaleDateString('en-US', {
+        year: 'numeric',
+        month: 'short',
+        day: 'numeric'
+      });
+    } catch (error) {
+      console.error('Date formatting error:', error);
+      return 'Invalid date';
+    }
   };
 
   return (
@@ -62,8 +75,8 @@ const NoticeBoard = () => {
         {/* Section Header */}
         <div
           className={`text-center mb-16 transition-all duration-1000 ${isVisible
-              ? 'opacity-100 translate-y-0'
-              : 'opacity-0 translate-y-10'
+            ? 'opacity-100 translate-y-0'
+            : 'opacity-0 translate-y-10'
             }`}
         >
           <div className="inline-block group cursor-pointer">
@@ -104,8 +117,8 @@ const NoticeBoard = () => {
         {!loading && !error && notices.length > 0 && (
           <div
             className={`max-w-4xl mx-auto space-y-4 mb-12 transition-all duration-1000 delay-200 ${isVisible
-                ? 'opacity-100 translate-y-0'
-                : 'opacity-0 translate-y-10'
+              ? 'opacity-100 translate-y-0'
+              : 'opacity-0 translate-y-10'
               }`}
           >
             {notices.map((notice, index) => (
@@ -162,8 +175,8 @@ const NoticeBoard = () => {
         {!loading && notices.length > 0 && (
           <div
             className={`flex justify-center transition-all duration-1000 delay-300 ${isVisible
-                ? 'opacity-100 translate-y-0'
-                : 'opacity-0 translate-y-10'
+              ? 'opacity-100 translate-y-0'
+              : 'opacity-0 translate-y-10'
               }`}
           >
             <button className="group relative px-8 py-4 bg-green-600 text-white font-semibold rounded-xl overflow-hidden transition-all duration-300 hover:scale-105 hover:shadow-lg hover:shadow-green-600/50">
