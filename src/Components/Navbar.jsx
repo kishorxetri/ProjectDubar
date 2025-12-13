@@ -1,9 +1,12 @@
 import { useState, useEffect } from 'react';
+import { Link, useLocation } from 'react-router-dom';
 import logo from '../assests/Logo.jfif';
 
 const Navbar = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const location = useLocation();
+  const isHomePage = location.pathname === '/';
 
   useEffect(() => {
     const handleScroll = () => {
@@ -15,12 +18,12 @@ const Navbar = () => {
   }, []);
 
   const navLinks = [
-    { name: 'Home', href: '#home' },
-    { name: 'About', href: '#about' },
-    { name: 'Programs', href: '#programs' },
-    { name: 'Gallery', href: '#gallery' },
-    { name: 'Notice', href: '#notice' },
-    { name: 'Contact', href: '#contact' },
+    { name: 'Home', href: '/', type: 'link' },
+    { name: 'About', href: '#about', type: 'hash' },
+    { name: 'Programs', href: '#programs', type: 'hash' },
+    { name: 'Gallery', href: '/gallery', type: 'link' },
+    { name: 'Notice', href: '#notice', type: 'hash' },
+    { name: 'Contact', href: '/contact', type: 'link' },
   ];
 
   return (
@@ -33,8 +36,8 @@ const Navbar = () => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-20 sm:h-24">
           {/* Logo */}
-          <a
-            href="#home"
+          <Link
+            to="/"
             className="flex items-center gap-2 sm:gap-3 group"
           >
             <img
@@ -59,35 +62,62 @@ const Navbar = () => {
                 Growing Together
               </span>
             </div>
-          </a>
+          </Link>
 
           {/* Desktop Menu */}
           <div className="hidden md:flex items-center gap-2">
             {navLinks.map((link) => (
-              <a
-                key={link.name}
-                href={link.href}
-                className="group relative px-4 lg:px-5 py-2.5 overflow-hidden rounded-lg"
-              >
-                <span
-                  className={`relative z-10 font-medium text-sm transition-colors duration-300 ${isScrolled
-                    ? 'text-slate-700 group-hover:text-green-600'
-                    : 'text-white/95 group-hover:text-white'
-                    }`}
+              link.type === 'link' ? (
+                <Link
+                  key={link.name}
+                  to={link.href}
+                  className="group relative px-4 lg:px-5 py-2.5 overflow-hidden rounded-lg"
                 >
-                  {link.name}
-                </span>
-                <div
-                  className={`absolute inset-0 rounded-lg transition-all duration-300 ${isScrolled
-                    ? 'bg-green-50 opacity-0 group-hover:opacity-100'
-                    : 'bg-white/10 backdrop-blur-sm opacity-0 group-hover:opacity-100'
-                    }`}
-                ></div>
-                <span
-                  className={`absolute bottom-1 left-4 lg:left-5 right-4 lg:right-5 h-0.5 rounded-full origin-left scale-x-0 transition-transform duration-300 ease-out group-hover:scale-x-100 ${isScrolled ? 'bg-green-600' : 'bg-white'
-                    }`}
-                ></span>
-              </a>
+                  <span
+                    className={`relative z-10 font-medium text-sm transition-colors duration-300 ${isScrolled
+                      ? 'text-slate-700 group-hover:text-green-600'
+                      : 'text-white/95 group-hover:text-white'
+                      }`}
+                  >
+                    {link.name}
+                  </span>
+                  <div
+                    className={`absolute inset-0 rounded-lg transition-all duration-300 ${isScrolled
+                      ? 'bg-green-50 opacity-0 group-hover:opacity-100'
+                      : 'bg-white/10 backdrop-blur-sm opacity-0 group-hover:opacity-100'
+                      }`}
+                  ></div>
+                  <span
+                    className={`absolute bottom-1 left-4 lg:left-5 right-4 lg:right-5 h-0.5 rounded-full origin-left scale-x-0 transition-transform duration-300 ease-out group-hover:scale-x-100 ${isScrolled ? 'bg-green-600' : 'bg-white'
+                      }`}
+                  ></span>
+                </Link>
+              ) : (
+                <a
+                  key={link.name}
+                  href={isHomePage ? link.href : `/${link.href}`}
+                  className="group relative px-4 lg:px-5 py-2.5 overflow-hidden rounded-lg"
+                >
+                  <span
+                    className={`relative z-10 font-medium text-sm transition-colors duration-300 ${isScrolled
+                      ? 'text-slate-700 group-hover:text-green-600'
+                      : 'text-white/95 group-hover:text-white'
+                      }`}
+                  >
+                    {link.name}
+                  </span>
+                  <div
+                    className={`absolute inset-0 rounded-lg transition-all duration-300 ${isScrolled
+                      ? 'bg-green-50 opacity-0 group-hover:opacity-100'
+                      : 'bg-white/10 backdrop-blur-sm opacity-0 group-hover:opacity-100'
+                      }`}
+                  ></div>
+                  <span
+                    className={`absolute bottom-1 left-4 lg:left-5 right-4 lg:right-5 h-0.5 rounded-full origin-left scale-x-0 transition-transform duration-300 ease-out group-hover:scale-x-100 ${isScrolled ? 'bg-green-600' : 'bg-white'
+                      }`}
+                  ></span>
+                </a>
+              )
             ))}
           </div>
 
@@ -125,15 +155,27 @@ const Navbar = () => {
       >
         <div className="bg-white/98 backdrop-blur-xl border-t border-green-200/80 px-4 sm:px-6 py-4 sm:py-6 space-y-2 shadow-xl">
           {navLinks.map((link, index) => (
-            <a
-              key={link.name}
-              href={link.href}
-              onClick={() => setIsMobileMenuOpen(false)}
-              className="block px-4 sm:px-5 py-3 sm:py-3.5 text-slate-700 hover:text-green-600 hover:bg-green-50 rounded-xl font-medium transition-all duration-300 transform hover:translate-x-1"
-              style={{ animationDelay: `${index * 50}ms` }}
-            >
-              {link.name}
-            </a>
+            link.type === 'link' ? (
+              <Link
+                key={link.name}
+                to={link.href}
+                onClick={() => setIsMobileMenuOpen(false)}
+                className="block px-4 sm:px-5 py-3 sm:py-3.5 text-slate-700 hover:text-green-600 hover:bg-green-50 rounded-xl font-medium transition-all duration-300 transform hover:translate-x-1"
+                style={{ animationDelay: `${index * 50}ms` }}
+              >
+                {link.name}
+              </Link>
+            ) : (
+              <a
+                key={link.name}
+                href={isHomePage ? link.href : `/${link.href}`}
+                onClick={() => setIsMobileMenuOpen(false)}
+                className="block px-4 sm:px-5 py-3 sm:py-3.5 text-slate-700 hover:text-green-600 hover:bg-green-50 rounded-xl font-medium transition-all duration-300 transform hover:translate-x-1"
+                style={{ animationDelay: `${index * 50}ms` }}
+              >
+                {link.name}
+              </a>
+            )
           ))}
         </div>
       </div>

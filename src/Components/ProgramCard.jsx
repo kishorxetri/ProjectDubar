@@ -1,8 +1,12 @@
+import { Link } from 'react-router-dom';
 import { FaArrowRight } from 'react-icons/fa';
 
-const ProgramCard = ({ image, title, description }) => {
+const ProgramCard = ({ image, title, description, slug }) => {
   return (
-    <div className="group bg-white rounded-2xl shadow-md hover:shadow-2xl transition-all duration-300 overflow-hidden hover:-translate-y-2">
+    <Link
+      to={`/programs/${slug}`}
+      className="block group bg-white rounded-2xl shadow-md hover:shadow-2xl transition-all duration-300 overflow-hidden hover:-translate-y-2"
+    >
       {/* Image Container */}
       <div className="relative h-64 overflow-hidden">
         <img
@@ -32,7 +36,7 @@ const ProgramCard = ({ image, title, description }) => {
           <FaArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform duration-300" />
         </div>
       </div>
-    </div>
+    </Link>
   );
 };
 

@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
+import { Link } from 'react-router-dom';
 import gallery1 from '../assests/Gallery1.jfif';
 import gallery2 from '../assests/Gallery2.jfif';
 import gallery3 from '../assests/Gallery3.jfif';
@@ -46,8 +47,8 @@ const GalleryPreview = () => {
         {/* Section Header */}
         <div
           className={`text-center mb-16 transition-all duration-1000 ${isVisible
-              ? 'opacity-100 translate-y-0'
-              : 'opacity-0 translate-y-10'
+            ? 'opacity-100 translate-y-0'
+            : 'opacity-0 translate-y-10'
             }`}
         >
           <div className="inline-block group cursor-pointer">
@@ -64,8 +65,8 @@ const GalleryPreview = () => {
         {/* Gallery Grid */}
         <div
           className={`grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-12 transition-all duration-1000 delay-200 ${isVisible
-              ? 'opacity-100 translate-y-0'
-              : 'opacity-0 translate-y-10'
+            ? 'opacity-100 translate-y-0'
+            : 'opacity-0 translate-y-10'
             }`}
         >
           {galleryImages.map((image, index) => (
@@ -90,18 +91,21 @@ const GalleryPreview = () => {
         {/* View Full Gallery Button */}
         <div
           className={`flex justify-center transition-all duration-1000 delay-300 ${isVisible
-              ? 'opacity-100 translate-y-0'
-              : 'opacity-0 translate-y-10'
+            ? 'opacity-100 translate-y-0'
+            : 'opacity-0 translate-y-10'
             }`}
         >
-          <button className="group relative px-8 py-4 bg-green-600 text-white font-semibold rounded-xl overflow-hidden transition-all duration-300 hover:scale-105 hover:shadow-lg hover:shadow-green-600/50">
+          <Link
+            to="/gallery"
+            className="group relative px-8 py-4 bg-green-600 text-white font-semibold rounded-xl overflow-hidden transition-all duration-300 hover:scale-105 hover:shadow-lg hover:shadow-green-600/50 inline-block"
+          >
             <span className="relative z-10">View Full Gallery</span>
             {/* Split Curtain Effect */}
             <div className="absolute inset-0 flex">
               <div className="w-1/2 h-full bg-green-700 transform origin-left scale-x-0 transition-transform duration-500 ease-out group-hover:scale-x-100"></div>
               <div className="w-1/2 h-full bg-green-700 transform origin-right scale-x-0 transition-transform duration-500 ease-out group-hover:scale-x-100"></div>
             </div>
-          </button>
+          </Link>
         </div>
       </div>
     </section>

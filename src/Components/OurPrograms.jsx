@@ -32,6 +32,7 @@ const OurPrograms = () => {
   const programs = [
     {
       id: 1,
+      slug: 'cleaning-campaign',
       image: program1,
       title: 'Cleaning Campaign',
       description:
@@ -39,6 +40,7 @@ const OurPrograms = () => {
     },
     {
       id: 2,
+      slug: 'health-first-aid',
       image: program2,
       title: 'Health & First Aid Program',
       description:
@@ -46,6 +48,7 @@ const OurPrograms = () => {
     },
     {
       id: 3,
+      slug: 'sports-competition',
       image: program3,
       title: 'Sports Competition',
       description:
@@ -59,8 +62,8 @@ const OurPrograms = () => {
         {/* Section Header */}
         <div
           className={`text-center mb-16 transition-all duration-1000 ${isVisible
-              ? 'opacity-100 translate-y-0'
-              : 'opacity-0 translate-y-10'
+            ? 'opacity-100 translate-y-0'
+            : 'opacity-0 translate-y-10'
             }`}
         >
           <div className="inline-block group cursor-pointer">
@@ -77,13 +80,14 @@ const OurPrograms = () => {
         {/* Programs Grid */}
         <div
           className={`grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 transition-all duration-1000 delay-200 ${isVisible
-              ? 'opacity-100 translate-y-0'
-              : 'opacity-0 translate-y-10'
+            ? 'opacity-100 translate-y-0'
+            : 'opacity-0 translate-y-10'
             }`}
         >
           {programs.map((program) => (
             <ProgramCard
               key={program.id}
+              slug={program.slug}
               image={program.image}
               title={program.title}
               description={program.description}
