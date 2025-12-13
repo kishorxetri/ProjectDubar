@@ -1,6 +1,7 @@
 import Navbar from '../Components/Navbar';
 import Hero from '../Components/Hero';
 import About from '../Components/About';
+import OurPrograms from '../Components/OurPrograms';
 
 const Home = () => {
   return (
@@ -9,19 +10,7 @@ const Home = () => {
       <Hero />
       <About />
 
-      <section
-        id="programs"
-        className="min-h-screen flex items-center justify-center bg-white"
-      >
-        <div className="text-center px-6">
-          <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-slate-800 mb-4">
-            Our Programs
-          </h2>
-          <p className="text-slate-600 max-w-xl mx-auto text-sm sm:text-base">
-            Community initiatives that bring positive change to our village
-          </p>
-        </div>
-      </section>
+      <OurPrograms />
 
       <section
         id="gallery"
