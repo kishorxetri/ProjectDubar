@@ -3,6 +3,8 @@ import Hero from '../Components/Hero';
 import About from '../Components/About';
 import OurPrograms from '../Components/OurPrograms';
 import GalleryPreview from '../Components/GalleryPreview';
+import NoticeBoard from '../Components/NoticeBoard';
+import Footer from '../Components/Footer';
 
 const Home = () => {
   return (
@@ -15,19 +17,7 @@ const Home = () => {
 
       <GalleryPreview />
 
-      <section
-        id="notice"
-        className="min-h-screen flex items-center justify-center bg-white"
-      >
-        <div className="text-center px-6">
-          <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-slate-800 mb-4">
-            Notice Board
-          </h2>
-          <p className="text-slate-600 max-w-xl mx-auto text-sm sm:text-base">
-            Stay connected with the latest news and updates from our village
-          </p>
-        </div>
-      </section>
+      <NoticeBoard />
 
       <section
         id="contact"
@@ -42,6 +32,8 @@ const Home = () => {
           </p>
         </div>
       </section>
+
+      <Footer />
     </div>
   );
 };
