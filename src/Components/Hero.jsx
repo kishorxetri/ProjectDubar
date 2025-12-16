@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
 import { FaChevronLeft, FaChevronRight } from 'react-icons/fa';
 import slide1 from '../assests/scroll1.jfif';
 import slide2 from '../assests/Scroll2.jfif';
@@ -28,6 +29,13 @@ const Hero = () => {
       setIsTransitioning(true);
       setCurrentSlide((prev) => (prev - 1 + slides.length) % slides.length);
       setTimeout(() => setIsTransitioning(false), 800);
+    }
+  };
+
+  const scrollToPrograms = () => {
+    const programsSection = document.querySelector('#programs');
+    if (programsSection) {
+      programsSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
     }
   };
 
@@ -116,7 +124,10 @@ const Hero = () => {
 
             {/* Buttons with Curtain Effect */}
             <div className="flex flex-wrap gap-4 opacity-0 animate-slide-up" style={{ animationDelay: '0.8s' }}>
-              <button className="group relative px-8 py-4 bg-green-600 text-white font-semibold rounded-xl overflow-hidden transition-all duration-300 hover:scale-105 hover:shadow-2xl hover:shadow-green-600/50">
+              <button
+                onClick={scrollToPrograms}
+                className="group relative px-8 py-4 bg-green-600 text-white font-semibold rounded-xl overflow-hidden transition-all duration-300 hover:scale-105 hover:shadow-2xl hover:shadow-green-600/50"
+              >
                 <span className="relative z-10">Explore Programs</span>
                 {/* Split Curtain Effect */}
                 <div className="absolute inset-0 flex">
@@ -125,14 +136,17 @@ const Hero = () => {
                 </div>
               </button>
 
-              <button className="group relative px-8 py-4 bg-white/10 backdrop-blur-sm text-white font-semibold rounded-xl border-2 border-white/30 overflow-hidden transition-all duration-300 hover:scale-105 hover:shadow-2xl hover:shadow-white/20">
+              <Link
+                to="/gallery"
+                className="group relative px-8 py-4 bg-white/10 backdrop-blur-sm text-white font-semibold rounded-xl border-2 border-white/30 overflow-hidden transition-all duration-300 hover:scale-105 hover:shadow-2xl hover:shadow-white/20 inline-block"
+              >
                 <span className="relative z-10">View Gallery</span>
                 {/* Split Curtain Effect */}
                 <div className="absolute inset-0 flex">
                   <div className="w-1/2 h-full bg-white/20 transform origin-left scale-x-0 transition-transform duration-500 ease-out group-hover:scale-x-100"></div>
                   <div className="w-1/2 h-full bg-white/20 transform origin-right scale-x-0 transition-transform duration-500 ease-out group-hover:scale-x-100"></div>
                 </div>
-              </button>
+              </Link>
             </div>
           </div>
         </div>
