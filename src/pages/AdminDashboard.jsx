@@ -1,11 +1,13 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
-import { noticeAPI } from '../services/api';
-import { FaPlus, FaEdit, FaTrash, FaSignOutAlt, FaCalendarAlt } from 'react-icons/fa';
+import { noticeAPI, memberAPI } from '../services/api';
+import { FaPlus, FaEdit, FaTrash, FaSignOutAlt, FaCalendarAlt, FaUsers, FaBell, FaPhone, FaEnvelope } from 'react-icons/fa';
 
 const AdminDashboard = () => {
+  const [activeTab, setActiveTab] = useState('notices');
   const [notices, setNotices] = useState([]);
+  const [members, setMembers] = useState([]);
   const [loading, setLoading] = useState(true);
   const [showForm, setShowForm] = useState(false);
   const [editingNotice, setEditingNotice] = useState(null);
@@ -18,6 +20,7 @@ const AdminDashboard = () => {
 
   useEffect(() => {
     fetchNotices();
+    fetchMembers();
   }, []);
 
   const fetchNotices = async () => {
@@ -29,6 +32,16 @@ const AdminDashboard = () => {
       console.error('Error fetching notices:', error);
       setError('Failed to load notices');
       setLoading(false);
+    }
+  };
+
+  const fetchMembers = async () => {
+    try {
+      const response = await memberAPI.getAll();
+      setMembers(response.members || []);
+    } catch (error) {
+      console.error('Error fetching members:', error);
+      setError('Failed to load members');
     }
   };
 
@@ -66,6 +79,22 @@ const AdminDashboard = () => {
     } catch (error) {
       console.error('Error deleting notice:', error);
       setError('Failed to delete notice');
+    }
+  };
+
+  const handleDeleteMember = async (id) => {
+    if (!window.confirm('Are you sure you want to delete this member?')) {
+      return;
+    }
+
+    try {
+      await memberAPI.delete(id);
+      setSuccess('Member deleted successfully');
+      fetchMembers();
+      setTimeout(() => setSuccess(''), 3000);
+    } catch (error) {
+      console.error('Error deleting member:', error);
+      setError('Failed to delete member');
     }
   };
 
@@ -163,6 +192,32 @@ const AdminDashboard = () => {
 
       {/* Main Content */}
       <div className="max-w-7xl mx-auto px-6 py-8">
+        {/* Tabs */}
+        <div className="mb-8 border-b border-slate-200">
+          <div className="flex gap-4">
+            <button
+              onClick={() => setActiveTab('notices')}
+              className={`flex items-center gap-2 px-6 py-3 font-semibold border-b-2 transition-colors ${activeTab === 'notices'
+                  ? 'border-green-600 text-green-600'
+                  : 'border-transparent text-slate-600 hover:text-slate-800'
+                }`}
+            >
+              <FaBell />
+              Notices ({notices.length})
+            </button>
+            <button
+              onClick={() => setActiveTab('members')}
+              className={`flex items-center gap-2 px-6 py-3 font-semibold border-b-2 transition-colors ${activeTab === 'members'
+                  ? 'border-green-600 text-green-600'
+                  : 'border-transparent text-slate-600 hover:text-slate-800'
+                }`}
+            >
+              <FaUsers />
+              Members ({members.length})
+            </button>
+          </div>
+        </div>
+
         {/* Success/Error Messages */}
         {success && (
           <div className="mb-6 bg-green-50 border border-green-200 text-green-700 px-4 py-3 rounded-lg">
@@ -176,15 +231,17 @@ const AdminDashboard = () => {
         )}
 
         {/* Add Notice Button */}
-        <div className="mb-6">
-          <button
-            onClick={handleAddNew}
-            className="flex items-center gap-2 px-6 py-3 bg-green-600 text-white font-semibold rounded-lg hover:bg-green-700 transition-colors"
-          >
-            <FaPlus />
-            Add New Notice
-          </button>
-        </div>
+        {activeTab === 'notices' && (
+          <div className="mb-6">
+            <button
+              onClick={handleAddNew}
+              className="flex items-center gap-2 px-6 py-3 bg-green-600 text-white font-semibold rounded-lg hover:bg-green-700 transition-colors"
+            >
+              <FaPlus />
+              Add New Notice
+            </button>
+          </div>
+        )}
 
         {/* Notice Form Modal */}
         {showForm && (
@@ -261,62 +318,139 @@ const AdminDashboard = () => {
         )}
 
         {/* Notices List */}
-        <div className="bg-white rounded-xl shadow-sm border border-slate-200">
-          <div className="p-6 border-b border-slate-200">
-            <h2 className="text-xl font-bold text-slate-800">
-              All Notices ({notices.length})
-            </h2>
-          </div>
-
-          {notices.length === 0 ? (
-            <div className="p-12 text-center text-slate-500">
-              <p className="text-lg">No notices yet</p>
-              <p className="text-sm mt-2">Click "Add New Notice" to create your first notice</p>
+        {activeTab === 'notices' && (
+          <div className="bg-white rounded-xl shadow-sm border border-slate-200">
+            <div className="p-6 border-b border-slate-200">
+              <h2 className="text-xl font-bold text-slate-800">
+                All Notices ({notices.length})
+              </h2>
             </div>
-          ) : (
-            <div className="divide-y divide-slate-200">
-              {notices.map((notice) => (
-                <div key={notice._id} className="p-6 hover:bg-slate-50 transition-colors">
-                  <div className="flex items-start justify-between gap-4">
-                    <div className="flex-1">
-                      <div className="flex items-center gap-3 mb-2">
-                        <h3 className="text-lg font-semibold text-slate-800">
-                          {notice.title}
-                        </h3>
-                        {notice.isNew && (
-                          <span className="px-2 py-0.5 bg-green-600 text-white text-xs font-semibold rounded-full">
-                            NEW
-                          </span>
-                        )}
+
+            {notices.length === 0 ? (
+              <div className="p-12 text-center text-slate-500">
+                <p className="text-lg">No notices yet</p>
+                <p className="text-sm mt-2">Click "Add New Notice" to create your first notice</p>
+              </div>
+            ) : (
+              <div className="divide-y divide-slate-200">
+                {notices.map((notice) => (
+                  <div key={notice._id} className="p-6 hover:bg-slate-50 transition-colors">
+                    <div className="flex items-start justify-between gap-4">
+                      <div className="flex-1">
+                        <div className="flex items-center gap-3 mb-2">
+                          <h3 className="text-lg font-semibold text-slate-800">
+                            {notice.title}
+                          </h3>
+                          {notice.isNew && (
+                            <span className="px-2 py-0.5 bg-green-600 text-white text-xs font-semibold rounded-full">
+                              NEW
+                            </span>
+                          )}
+                        </div>
+                        <p className="text-slate-600 mb-3">{notice.description}</p>
+                        <div className="flex items-center gap-2 text-sm text-slate-500">
+                          <FaCalendarAlt className="w-3.5 h-3.5" />
+                          <span>Created: {formatDate(notice.createdAt)}</span>
+                        </div>
                       </div>
-                      <p className="text-slate-600 mb-3">{notice.description}</p>
-                      <div className="flex items-center gap-2 text-sm text-slate-500">
-                        <FaCalendarAlt className="w-3.5 h-3.5" />
-                        <span>Created: {formatDate(notice.createdAt)}</span>
+                      <div className="flex items-center gap-2">
+                        <button
+                          onClick={() => handleEdit(notice)}
+                          className="p-2 text-blue-600 hover:bg-blue-50 rounded-lg transition-colors"
+                          title="Edit"
+                        >
+                          <FaEdit className="w-5 h-5" />
+                        </button>
+                        <button
+                          onClick={() => handleDelete(notice._id)}
+                          className="p-2 text-red-600 hover:bg-red-50 rounded-lg transition-colors"
+                          title="Delete"
+                        >
+                          <FaTrash className="w-5 h-5" />
+                        </button>
                       </div>
-                    </div>
-                    <div className="flex items-center gap-2">
-                      <button
-                        onClick={() => handleEdit(notice)}
-                        className="p-2 text-blue-600 hover:bg-blue-50 rounded-lg transition-colors"
-                        title="Edit"
-                      >
-                        <FaEdit className="w-5 h-5" />
-                      </button>
-                      <button
-                        onClick={() => handleDelete(notice._id)}
-                        className="p-2 text-red-600 hover:bg-red-50 rounded-lg transition-colors"
-                        title="Delete"
-                      >
-                        <FaTrash className="w-5 h-5" />
-                      </button>
                     </div>
                   </div>
-                </div>
-              ))}
+                ))}
+              </div>
+            )}
+          </div>
+        )}
+
+        {/* Members List */}
+        {activeTab === 'members' && (
+          <div className="bg-white rounded-xl shadow-sm border border-slate-200">
+            <div className="p-6 border-b border-slate-200">
+              <h2 className="text-xl font-bold text-slate-800">
+                Membership Applications ({members.length})
+              </h2>
             </div>
-          )}
-        </div>
+
+            {members.length === 0 ? (
+              <div className="p-12 text-center text-slate-500">
+                <p className="text-lg">No membership applications yet</p>
+                <p className="text-sm mt-2">Applications will appear here when users submit the membership form</p>
+              </div>
+            ) : (
+              <div className="divide-y divide-slate-200">
+                {members.map((member) => (
+                  <div key={member._id} className="p-6 hover:bg-slate-50 transition-colors">
+                    <div className="flex items-start justify-between gap-4">
+                      <div className="flex-1">
+                        <div className="flex items-center gap-3 mb-3">
+                          <h3 className="text-lg font-semibold text-slate-800">
+                            {member.name}
+                          </h3>
+                          {member.isNew && (
+                            <span className="px-2 py-0.5 bg-green-600 text-white text-xs font-semibold rounded-full">
+                              NEW
+                            </span>
+                          )}
+                        </div>
+
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-3 mb-3">
+                          <div className="flex items-center gap-2 text-slate-600">
+                            <FaPhone className="w-4 h-4 text-green-600" />
+                            <a href={`tel:${member.phone}`} className="hover:text-green-600 transition-colors">
+                              {member.phone}
+                            </a>
+                          </div>
+                          <div className="flex items-center gap-2 text-slate-600">
+                            <FaEnvelope className="w-4 h-4 text-green-600" />
+                            <a href={`mailto:${member.email}`} className="hover:text-green-600 transition-colors">
+                              {member.email}
+                            </a>
+                          </div>
+                        </div>
+
+                        <div className="mb-3">
+                          <p className="text-sm text-slate-600">
+                            <span className="font-semibold">Address:</span> {member.address}
+                          </p>
+                        </div>
+
+                        <div className="flex items-center gap-2 text-sm text-slate-500">
+                          <FaCalendarAlt className="w-3.5 h-3.5" />
+                          <span>Submitted: {formatDate(member.createdAt)}</span>
+                        </div>
+                      </div>
+
+                      <div className="flex items-center gap-2">
+                        <button
+                          onClick={() => handleDeleteMember(member._id)}
+                          className="p-2 text-red-600 hover:bg-red-50 rounded-lg transition-colors"
+                          title="Delete"
+                        >
+                          <FaTrash className="w-5 h-5" />
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+        )}
       </div>
     </div>
   );

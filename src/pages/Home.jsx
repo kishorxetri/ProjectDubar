@@ -5,6 +5,7 @@ import OurPrograms from '../Components/OurPrograms';
 import GalleryPreview from '../Components/GalleryPreview';
 import NoticeBoard from '../Components/NoticeBoard';
 import LocationMap from '../Components/LocationMap';
+import Membership from '../Components/Membership';
 import Footer from '../Components/Footer';
 
 const Home = () => {
@@ -21,6 +22,8 @@ const Home = () => {
       <NoticeBoard />
 
       <LocationMap />
+
+      <Membership />
 
       <Footer />
     </div>
