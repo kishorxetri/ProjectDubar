@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import { FaUser, FaPhone, FaEnvelope, FaMapMarkerAlt, FaCheckCircle } from 'react-icons/fa';
+import { memberAPI } from '../services/api';
 
 const Membership = () => {
   const [isVisible, setIsVisible] = useState(false);
@@ -11,6 +12,7 @@ const Membership = () => {
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitSuccess, setSubmitSuccess] = useState(false);
+  const [error, setError] = useState('');
   const sectionRef = useRef(null);
 
   useEffect(() => {
@@ -44,18 +46,29 @@ const Membership = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setIsSubmitting(true);
+    setError('');
 
-    // Simulate form submission
-    setTimeout(() => {
-      setIsSubmitting(false);
+    try {
+      await memberAPI.create(
+        formData.name,
+        formData.phone,
+        formData.address,
+        formData.email
+      );
+
       setSubmitSuccess(true);
       setFormData({ name: '', phone: '', address: '', email: '' });
 
-      // Reset success message after 3 seconds
+      // Reset success message after 5 seconds
       setTimeout(() => {
         setSubmitSuccess(false);
-      }, 3000);
-    }, 1500);
+      }, 5000);
+    } catch (err) {
+      console.error('Error submitting membership:', err);
+      setError(err.response?.data?.message || 'Failed to submit membership application. Please try again.');
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   const benefits = [
@@ -146,6 +159,13 @@ const Membership = () => {
                   <p className="text-green-700 font-medium">
                     Thank you! Your membership application has been submitted successfully.
                   </p>
+                </div>
+              )}
+
+              {/* Error Message */}
+              {error && (
+                <div className="mb-6 p-4 bg-red-50 border border-red-200 rounded-xl flex items-center gap-3">
+                  <p className="text-red-700 font-medium">{error}</p>
                 </div>
               )}
 

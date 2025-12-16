@@ -6,6 +6,7 @@ const connectDB = require('./config/db');
 // Import routes
 const authRoutes = require('./routes/auth');
 const noticeRoutes = require('./routes/notices');
+const memberRoutes = require('./routes/members');
 
 // Initialize Express app
 const app = express();
@@ -21,6 +22,7 @@ app.use(express.urlencoded({ extended: true })); // Parse URL-encoded bodies
 // Routes
 app.use('/api/auth', authRoutes);
 app.use('/api/notices', noticeRoutes);
+app.use('/api/members', memberRoutes);
 
 // Root route
 app.get('/', (req, res) => {
@@ -30,6 +32,7 @@ app.get('/', (req, res) => {
     endpoints: {
       auth: '/api/auth',
       notices: '/api/notices',
+      members: '/api/members',
     },
   });
 });

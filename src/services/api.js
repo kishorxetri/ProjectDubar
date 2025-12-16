@@ -70,4 +70,22 @@ export const noticeAPI = {
   },
 };
 
+// Member API
+export const memberAPI = {
+  create: async (name, phone, address, email) => {
+    const response = await api.post('/members', { name, phone, address, email });
+    return response.data;
+  },
+
+  getAll: async () => {
+    const response = await api.get('/members');
+    return response.data;
+  },
+
+  delete: async (id) => {
+    const response = await api.delete(`/members/${id}`);
+    return response.data;
+  },
+};
+
 export default api;
