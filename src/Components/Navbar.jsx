@@ -118,6 +118,47 @@ const Navbar = () => {
                 </a>
               )
             ))}
+
+            {/* Admin Button */}
+            <Link
+              to="/admin/login"
+              className="group relative ml-3 px-5 lg:px-6 py-2.5 overflow-hidden rounded-xl transition-all duration-500 hover:scale-105"
+            >
+              {/* Gradient Background */}
+              <div className={`absolute inset-0 rounded-xl transition-all duration-500 ${isScrolled
+                ? 'bg-gradient-to-r from-green-600 via-green-500 to-emerald-600'
+                : 'bg-gradient-to-r from-green-500 via-emerald-500 to-green-600'
+                }`}></div>
+
+              {/* Animated Glow Effect */}
+              <div className="absolute inset-0 rounded-xl bg-gradient-to-r from-green-400 to-emerald-400 opacity-0 group-hover:opacity-100 blur-xl transition-opacity duration-500"></div>
+
+              {/* Shine Effect */}
+              <div className="absolute inset-0 rounded-xl opacity-0 group-hover:opacity-100 transition-opacity duration-700">
+                <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000"></div>
+              </div>
+
+              {/* Content */}
+              <span className="relative z-10 font-bold text-sm text-white flex items-center gap-2">
+                <svg
+                  className="w-4 h-4 group-hover:rotate-12 transition-transform duration-300"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2.5}
+                    d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"
+                  />
+                </svg>
+                <span className="tracking-wide">Admin</span>
+              </span>
+
+              {/* Border Glow */}
+              <div className="absolute inset-0 rounded-xl ring-2 ring-green-400/50 group-hover:ring-green-300 group-hover:ring-4 transition-all duration-300"></div>
+            </Link>
           </div>
 
           {/* Mobile Menu Button */}
@@ -176,6 +217,43 @@ const Navbar = () => {
               </a>
             )
           ))}
+
+          {/* Admin Button - Mobile */}
+          <Link
+            to="/admin/login"
+            onClick={() => setIsMobileMenuOpen(false)}
+            className="group relative flex items-center justify-center gap-2 px-4 sm:px-5 py-3.5 sm:py-4 overflow-hidden rounded-xl font-bold transition-all duration-500 transform hover:scale-[1.02] mt-4"
+          >
+            {/* Gradient Background */}
+            <div className="absolute inset-0 bg-gradient-to-r from-green-600 via-green-500 to-emerald-600 rounded-xl"></div>
+
+            {/* Glow Effect */}
+            <div className="absolute inset-0 rounded-xl bg-gradient-to-r from-green-400 to-emerald-400 opacity-0 group-hover:opacity-100 blur-lg transition-opacity duration-500"></div>
+
+            {/* Shine Effect */}
+            <div className="absolute inset-0 rounded-xl opacity-0 group-hover:opacity-100 transition-opacity duration-700">
+              <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000"></div>
+            </div>
+
+            {/* Content */}
+            <svg
+              className="w-5 h-5 text-white relative z-10 group-hover:rotate-12 transition-transform duration-300"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2.5}
+                d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"
+              />
+            </svg>
+            <span className="text-white relative z-10 tracking-wide">Admin Login</span>
+
+            {/* Border Glow */}
+            <div className="absolute inset-0 rounded-xl ring-2 ring-green-400/50 group-hover:ring-green-300 group-hover:ring-4 transition-all duration-300"></div>
+          </Link>
         </div>
       </div>
     </nav>
