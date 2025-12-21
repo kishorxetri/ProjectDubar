@@ -156,7 +156,7 @@ const NoticeBoard = () => {
                     <div className="flex items-center gap-1.5 px-3 py-1.5 bg-slate-100 rounded-lg">
                       <FaCalendarAlt className="w-3.5 h-3.5 text-slate-600" />
                       <span className="text-sm font-medium text-slate-600">
-                        {formatDate(notice.createdAt)}
+                        {formatDate(notice.updatedAt || notice.createdAt)}
                       </span>
                     </div>
                   </div>

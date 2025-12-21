@@ -198,8 +198,8 @@ const AdminDashboard = () => {
             <button
               onClick={() => setActiveTab('notices')}
               className={`flex items-center gap-2 px-6 py-3 font-semibold border-b-2 transition-colors ${activeTab === 'notices'
-                  ? 'border-green-600 text-green-600'
-                  : 'border-transparent text-slate-600 hover:text-slate-800'
+                ? 'border-green-600 text-green-600'
+                : 'border-transparent text-slate-600 hover:text-slate-800'
                 }`}
             >
               <FaBell />
@@ -208,8 +208,8 @@ const AdminDashboard = () => {
             <button
               onClick={() => setActiveTab('members')}
               className={`flex items-center gap-2 px-6 py-3 font-semibold border-b-2 transition-colors ${activeTab === 'members'
-                  ? 'border-green-600 text-green-600'
-                  : 'border-transparent text-slate-600 hover:text-slate-800'
+                ? 'border-green-600 text-green-600'
+                : 'border-transparent text-slate-600 hover:text-slate-800'
                 }`}
             >
               <FaUsers />
@@ -350,7 +350,7 @@ const AdminDashboard = () => {
                         <p className="text-slate-600 mb-3">{notice.description}</p>
                         <div className="flex items-center gap-2 text-sm text-slate-500">
                           <FaCalendarAlt className="w-3.5 h-3.5" />
-                          <span>Created: {formatDate(notice.createdAt)}</span>
+                          <span>Last Updated: {formatDate(notice.updatedAt || notice.createdAt)}</span>
                         </div>
                       </div>
                       <div className="flex items-center gap-2">
