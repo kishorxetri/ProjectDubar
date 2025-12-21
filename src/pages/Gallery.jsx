@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from 'react';
 import { FaTimes, FaChevronLeft, FaChevronRight, FaImages } from 'react-icons/fa';
-import Navbar from '../Components/Navbar';
-import Footer from '../Components/Footer';
+import Navbar from '../components/Navbar';
+import Footer from '../components/Footer';
 
 // Import all gallery images
 import Gallery1 from '../assests/Gallery1.jfif';
