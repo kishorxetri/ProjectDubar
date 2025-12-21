@@ -193,10 +193,10 @@ const ProgramDetail = () => {
                 Interested in participating or supporting this program? We'd love to have you join our community initiatives.
               </p>
               <button
-                onClick={() => navigate('/contact')}
+                onClick={() => navigate('/#membership')}
                 className="px-8 py-3 bg-white text-green-600 font-semibold rounded-xl hover:bg-green-50 transition-colors"
               >
-                Contact Us
+                Get Membership
               </button>
             </div>
           </div>

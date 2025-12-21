@@ -24,6 +24,7 @@ const Gallery = () => {
   const [isVisible, setIsVisible] = useState(false);
   const [selectedImage, setSelectedImage] = useState(null);
   const [currentIndex, setCurrentIndex] = useState(0);
+  const [isZoomed, setIsZoomed] = useState(false);
   const sectionRef = useRef(null);
 
   const galleryImages = [
@@ -76,22 +77,26 @@ const Gallery = () => {
   const openLightbox = (index) => {
     setCurrentIndex(index);
     setSelectedImage(galleryImages[index]);
+    setIsZoomed(false);
   };
 
   const closeLightbox = () => {
     setSelectedImage(null);
+    setIsZoomed(false);
   };
 
   const nextImage = () => {
     const newIndex = (currentIndex + 1) % galleryImages.length;
     setCurrentIndex(newIndex);
     setSelectedImage(galleryImages[newIndex]);
+    setIsZoomed(false);
   };
 
   const prevImage = () => {
     const newIndex = (currentIndex - 1 + galleryImages.length) % galleryImages.length;
     setCurrentIndex(newIndex);
     setSelectedImage(galleryImages[newIndex]);
+    setIsZoomed(false);
   };
 
   useEffect(() => {
@@ -212,50 +217,88 @@ const Gallery = () => {
 
       {/* Lightbox */}
       {selectedImage && (
-        <div className="fixed inset-0 bg-black/95 z-50 flex items-center justify-center p-4">
+        <div className="fixed inset-0 bg-black/95 z-50 flex items-center justify-center p-4 transition-all duration-300 backdrop-blur-sm">
+          {/* Backdrop (clickable area to close) */}
+          <div
+            className="absolute inset-0 z-0"
+            onClick={closeLightbox}
+          ></div>
+
           {/* Close Button */}
           <button
             onClick={closeLightbox}
-            className="absolute top-4 right-4 w-12 h-12 bg-white/10 backdrop-blur-sm hover:bg-white/20 rounded-full flex items-center justify-center transition-all duration-300 hover:scale-110 z-50"
+            className="absolute top-6 right-6 w-12 h-12 bg-white/10 backdrop-blur-md hover:bg-white/20 rounded-full flex items-center justify-center transition-all duration-300 hover:scale-110 z-[60] group"
             aria-label="Close"
           >
-            <FaTimes className="text-white text-xl" />
+            <FaTimes className="text-white text-xl group-hover:rotate-90 transition-transform duration-300" />
           </button>
 
-          {/* Previous Button */}
-          <button
-            onClick={prevImage}
-            className="absolute left-4 top-1/2 -translate-y-1/2 w-12 h-12 bg-white/10 backdrop-blur-sm hover:bg-white/20 rounded-full flex items-center justify-center transition-all duration-300 hover:scale-110 z-50"
-            aria-label="Previous"
-          >
-            <FaChevronLeft className="text-white text-xl" />
-          </button>
+          {/* Previous Button / Only show if not zoomed for better experience */}
+          {!isZoomed && (
+            <button
+              onClick={(e) => {
+                e.stopPropagation();
+                prevImage();
+              }}
+              className="absolute left-4 top-1/2 -translate-y-1/2 w-14 h-14 bg-white/5 backdrop-blur-sm hover:bg-white/20 rounded-full flex items-center justify-center transition-all duration-300 hover:scale-110 z-50 group border border-white/10"
+              aria-label="Previous"
+            >
+              <FaChevronLeft className="text-white text-2xl group-hover:-translate-x-1 transition-transform" />
+            </button>
+          )}
 
-          {/* Next Button */}
-          <button
-            onClick={nextImage}
-            className="absolute right-4 top-1/2 -translate-y-1/2 w-12 h-12 bg-white/10 backdrop-blur-sm hover:bg-white/20 rounded-full flex items-center justify-center transition-all duration-300 hover:scale-110 z-50"
-            aria-label="Next"
-          >
-            <FaChevronRight className="text-white text-xl" />
-          </button>
+          {/* Next Button / Only show if not zoomed */}
+          {!isZoomed && (
+            <button
+              onClick={(e) => {
+                e.stopPropagation();
+                nextImage();
+              }}
+              className="absolute right-4 top-1/2 -translate-y-1/2 w-14 h-14 bg-white/5 backdrop-blur-sm hover:bg-white/20 rounded-full flex items-center justify-center transition-all duration-300 hover:scale-110 z-50 group border border-white/10"
+              aria-label="Next"
+            >
+              <FaChevronRight className="text-white text-2xl group-hover:translate-x-1 transition-transform" />
+            </button>
+          )}
 
-          {/* Image */}
-          <div className="max-w-6xl max-h-[90vh] w-full">
-            <img
-              src={selectedImage.src}
-              alt={selectedImage.title}
-              className="w-full h-full object-contain rounded-lg"
-            />
-            <div className="mt-4 text-center">
-              <span className="inline-block px-4 py-2 bg-green-500 text-white text-sm font-semibold rounded-full mb-2">
-                {selectedImage.category}
-              </span>
-              <h3 className="text-white text-xl font-semibold">{selectedImage.title}</h3>
-              <p className="text-white/60 text-sm mt-2">
-                {currentIndex + 1} / {galleryImages.length}
-              </p>
+          {/* Image Container */}
+          <div className={`relative z-10 transition-all duration-500 ease-out ${isZoomed ? 'scale-100 max-w-full max-h-full' : 'scale-95 max-w-6xl max-h-[85vh]'} flex flex-col items-center justify-center`}>
+            <div
+              className={`relative overflow-hidden rounded-xl shadow-2xl transition-all duration-500 ${isZoomed ? 'cursor-zoom-out' : 'cursor-zoom-in'}`}
+              onClick={() => setIsZoomed(!isZoomed)}
+            >
+              <img
+                src={selectedImage.src}
+                alt={selectedImage.title}
+                className={`w-full transition-all duration-700 ease-in-out ${isZoomed ? 'h-auto max-h-screen object-cover scale-110' : 'h-full max-h-[75vh] object-contain'}`}
+              />
+
+              {/* Zoom Instruction Overlay (fades out) */}
+              {!isZoomed && (
+                <div className="absolute inset-0 bg-black/20 opacity-0 hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
+                  <span className="bg-white/20 backdrop-blur-md px-4 py-2 rounded-full text-white text-sm font-medium border border-white/30">
+                    Click to enlarge
+                  </span>
+                </div>
+              )}
             </div>
+
+            {/* Caption - Only show when not zoomed for focus */}
+            {!isZoomed && (
+              <div className="mt-6 text-center animate-in fade-in slide-in-from-bottom-4 duration-500">
+                <div className="flex items-center justify-center gap-3 mb-3">
+                  <span className="px-4 py-1 bg-green-500 text-white text-xs font-bold uppercase tracking-wider rounded-full shadow-lg">
+                    {selectedImage.category}
+                  </span>
+                  <span className="text-white/40 text-sm font-medium">
+                    {currentIndex + 1} of {galleryImages.length}
+                  </span>
+                </div>
+                <h3 className="text-white text-2xl md:text-3xl font-bold tracking-tight">
+                  {selectedImage.title}
+                </h3>
+              </div>
+            )}
           </div>
         </div>
       )}
