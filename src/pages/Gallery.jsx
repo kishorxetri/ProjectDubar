@@ -268,9 +268,10 @@ const Gallery = () => {
               onClick={() => setIsZoomed(!isZoomed)}
             >
               <img
+                key={selectedImage.src}
                 src={selectedImage.src}
                 alt={selectedImage.title}
-                className={`w-full transition-all duration-700 ease-in-out ${isZoomed ? 'h-auto max-h-screen object-cover scale-110' : 'h-full max-h-[75vh] object-contain'}`}
+                className={`w-full transition-all duration-700 ease-in-out animate-lightbox-in ${isZoomed ? 'h-auto max-h-screen object-cover scale-110' : 'h-full max-h-[75vh] object-contain'}`}
               />
 
               {/* Zoom Instruction Overlay (fades out) */}
