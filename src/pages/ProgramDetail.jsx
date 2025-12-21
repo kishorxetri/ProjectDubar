@@ -1,10 +1,10 @@
 import { useParams, useNavigate } from 'react-router-dom';
 import { FaArrowLeft, FaCheckCircle } from 'react-icons/fa';
-import Navbar from '../Components/Navbar';
-import Footer from '../Components/Footer';
-import program1 from '../assests/program1.jfif';
-import program2 from '../assests/Program2.jfif';
-import program3 from '../assests/Program3.jfif';
+import Navbar from '../components/Navbar';
+import Footer from '../components/Footer';
+import program1 from '../assets/program1.jfif';
+import program2 from '../assets/Program2.jfif';
+import program3 from '../assets/Program3.jfif';
 
 const ProgramDetail = () => {
   const { programId } = useParams();
